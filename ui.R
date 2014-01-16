@@ -65,24 +65,24 @@ shinyUI(pageWithSidebar(
     ),
     conditionalPanel(
       condition = "input.dist == 'df'",
-        sliderInput("df1", "df1: degrees of freedom", value=0, min=0, max=10),
-        sliderInput("df2", "df2: degrees of freedom", value=0, min=0, max=10),
+        sliderInput("df1", "df1: degrees of freedom", value=5, min=0.1, max=10, step=0.1),
+        sliderInput("df2", "df2: degrees of freedom", value=5, min=0.1, max=10, step=0.1),
         sliderInput("ncp2", "ncp: non-centrality parameter", value=0, min=0, max=10)
     ),
     conditionalPanel(
       condition = "input.dist == 'dgamma'",
-        sliderInput("shape", "shape", value=0, min=0, max=10),
-        sliderInput("rate", "rate", value=1, min=1, max=10)
+        sliderInput("shape", "shape: shape parameter, must be positive", value=1, min=0, max=10, step=0.1),
+        sliderInput("scale1", "scale: scale parameter, must be strictly positive", value=1, min=0.1, max=10, step=0.1)
     ),
     conditionalPanel(
       condition = "input.dist == 'dgeom'",
-        sliderInput("prob", "prob", value=0, min=0, max=1)
+        sliderInput("prob1", "prob: probability of success in each trial", value=0.5, min=0.1, max=1, step=0.05)
     ),
     conditionalPanel(
       condition = "input.dist == 'dhyper'",
-        sliderInput("m", "white balls", value=0, min=0, max=10),
-        sliderInput("n_", "black balls", value=1, min=0, max=10),
-        sliderInput("k", "balls drawn", value=1, min=0, max=10)
+        sliderInput("m", "m: the number of white balls in the urn", value=20, min=0, max=50),
+        sliderInput("n_", "n: the number of black balls in the urn", value=10, min=0, max=50),
+        sliderInput("k", "k: the number of balls drawn from the urn", value=15, min=0, max=100)
     ),
     conditionalPanel(
       condition = "input.dist == 'dlnorm'",
