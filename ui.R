@@ -82,7 +82,7 @@ shinyUI(pageWithSidebar(
       condition = "input.dist == 'dhyper'",
         sliderInput("m", "m: the number of white balls in the urn", value=20, min=0, max=50),
         sliderInput("n_", "n: the number of black balls in the urn", value=10, min=0, max=50),
-        sliderInput("k", "k: the number of balls drawn from the urn", value=15, min=0, max=100)
+        uiOutput("slieder3")
     ),
     conditionalPanel(
       condition = "input.dist == 'dlnorm'",

@@ -64,5 +64,11 @@ shinyServer(function(input, output) {
   #output$table <- renderTable({
   #  data.frame(x=data())
   #})
-  
+
+  output$slieder3 <- renderUI({
+    m <- input$m
+    n <- input$n_
+    sliderInput("k", "k: the number of balls drawn from the urn", value=min(15, m+n), min=0, max=max(m+n, 1), step=1)
+  })
 })
+
