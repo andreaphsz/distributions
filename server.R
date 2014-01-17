@@ -21,7 +21,7 @@ shinyServer(function(input, output) {
                    dhyper = rhyper(input$n, input$m, input$n_, input$k),
                    dlnorm = rlnorm(input$n, input$meanlog, input$sdlog),
                    dmultinom = rmultinom(input$n, input$size, input$prob),
-                   dnbinom = rnbinom(input$n, input$size, input$prob, input$mu),
+                   dnbinom = if(input$p_or_mu=="prob") rnbinom(input$n, input$size3, input$prob3) else rnbinom(input$n, input$size3, mu=input$mu),
                    dnorm = rnorm(input$n, input$mean, input$sd),
                    dpois = rpois(input$n, input$lambda),
                    dt = rt(input$n, input$df, input$ncp),

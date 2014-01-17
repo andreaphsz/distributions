@@ -91,14 +91,21 @@ shinyUI(pageWithSidebar(
     ),
     conditionalPanel(
       condition = "input.dist == 'dmultinom'",
-        sliderInput("size", "size", value=0, min=0, max=10),
-        sliderInput("prob", "prob", value=0, min=0, max=1)
+        sliderInput("size2", "size", value=0, min=0, max=10),
+        sliderInput("prob2", "prob", value=0, min=0, max=1)
     ),
     conditionalPanel(
       condition = "input.dist == 'dnbinom'",
-        sliderInput("size", "size", value=0, min=0, max=10),
-        sliderInput("prob", "prob", value=0, min=0, max=10),
-        sliderInput("mu", "mu", value=0, min=0, max=10)
+        sliderInput("size3", "size: target for number of successful trials, or dispersion parameter (the shape parameter of the gamma mixing distribution)", value=5, min=0.1, max=10, step=0.1),
+        radioButtons("p_or_mu", "parametrization via prob or mean?", list("prob","mean"), selected = "prob")
+    ),
+    conditionalPanel(
+      condition = "input.p_or_mu == 'prob' && input.dist == 'dnbinom'",
+        sliderInput("prob3", "prob: probability of success in each trial", value=0.5, min=0.05, max=1, step=0.05, ticks = FALSE)
+    ),
+    conditionalPanel(
+      condition = "input.p_or_mu == 'mean' && input.dist == 'dnbinom'",
+        sliderInput("mu", "mu: alternative parametrization via mean", value=5, min=0, max=10, step=0.1, ticks = FALSE)
     ),
     conditionalPanel(
       condition = "input.dist == 'dnorm'",
