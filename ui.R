@@ -86,8 +86,8 @@ shinyUI(pageWithSidebar(
     ),
     conditionalPanel(
       condition = "input.dist == 'dlnorm'",
-        sliderInput("meanlog", "meanlog", value=0, min=0, max=10),
-        sliderInput("sdlog", "sdlog", value=1, min=1, max=10)
+        sliderInput("meanlog", "meanlog: mean of the distribution on the log scale", value=0, min=-3, max=3, step=0.05),
+        sliderInput("sdlog", "sdlog: standard deviation of the distribution on the log scale", value=1, min=0, max=3, step=0.05)
     ),
     conditionalPanel(
       condition = "input.dist == 'dmultinom'",
