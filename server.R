@@ -24,11 +24,11 @@ shinyServer(function(input, output) {
                    dnbinom = if(input$p_or_mu=="prob") rnbinom(input$n, input$size3, input$prob3) else rnbinom(input$n, input$size3, mu=input$mu),
                    dnorm = rnorm(input$n, input$mean, input$sd),
                    dpois = rpois(input$n, input$lambda),
-                   dt = rt(input$n, input$df, input$ncp),
+                   dt = rt(input$n, input$df3, input$ncp3),
                    dunif = runif(input$n, input$min, input$max),
-                   dweibull = rweibull(input$n, input$shape, input$scale),
-                   dsignrank = rsignrank(input$n, input$n_),
-                   dwilcox = rwilcox(input$n, input$m, input$n_)
+                   dweibull = rweibull(input$n, input$shape4, input$scale4),
+                   dsignrank = rsignrank(input$n, input$n_1),
+                   dwilcox = rwilcox(input$n, input$m_2, input$n_2)
                    )
     
   })
@@ -70,5 +70,14 @@ shinyServer(function(input, output) {
     n <- input$n_
     sliderInput("k", "k: the number of balls drawn from the urn", value=min(15, m+n), min=0, max=max(m+n, 1), step=1)
   })
+
+  output$slider_u1 <- renderUI({
+    sliderInput("min", "min: lower limit of the distribution", value=ifelse(is.null(input$min),0,input$min), min=-5, max=min(5,input$max), step=0.1, ticks=FALSE)
+  })
+
+  output$slider_u2 <- renderUI({
+    sliderInput("max", "max: upper limit of the distribution", value=ifelse(is.null(input$max),1,input$max), min=max(-5,input$min), max=5, step=0.1, ticks=FALSE)
+  })
+
 })
 

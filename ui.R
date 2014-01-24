@@ -21,7 +21,7 @@ shinyUI(pageWithSidebar(
                          "Geometric" = "dgeom",
                          "Hypergeometric" = "dhyper",
                          "Lognormal" = "dlnorm",
-                         "Multinom" = "dmultinom",
+                         #"Multinom" = "dmultinom",
                          "NegBinomial" = "dnbinom",
                          "Normal" = "dnorm",
                          "Poisson" = "dpois",
@@ -109,36 +109,36 @@ shinyUI(pageWithSidebar(
     ),
     conditionalPanel(
       condition = "input.dist == 'dnorm'",
-        sliderInput("mean", "mean", value=0, min=0, max=10),
-        sliderInput("sd", "sd", value=1, min=0, max=10)
+        sliderInput("mean", "mean: vector of means", value=0, min=-5, max=5, step=0.1),
+        sliderInput("sd", "sd: vector of standard deviations", value=1, min=0, max=10, step=0.1)
     ),
     conditionalPanel(
       condition = "input.dist == 'dpois'",
-       sliderInput("lambda", "lambda", value=0, min=0, max=10)
+       sliderInput("lambda", "lambda: vector of (non-negative) means", value=0, min=0, max=10, step=0.1)
     ),
     conditionalPanel(
       condition = "input.dist == 'dt'",
-        sliderInput("df", "df", value=0, min=0, max=10),
-        sliderInput("ncp", "ncp", value=0, min=0, max=10)
+        sliderInput("df3", "df: degrees of freedom (> 0, maybe non-integer)", value=5, min=0.1, max=10, step=0.1),
+        sliderInput("ncp3", "ncp: non-centrality parameter delta", value=0, min=-5, max=5, step=0.1)
     ),
     conditionalPanel(
       condition = "input.dist == 'dunif'",
-        sliderInput("min", "min", value=0, min=0, max=10),
-        sliderInput("max", "max", value=0, min=0, max=10)
+        uiOutput("slider_u1"),
+        uiOutput("slider_u2")
     ),
     conditionalPanel(
       condition = "input.dist == 'dweibull'",
-        sliderInput("shape", "shape", value=0, min=0, max=10),
-        sliderInput("scale", "scale", value=0, min=0, max=10)
+        sliderInput("shape4", "shape: shape parameter", value=5, min=0.1, max=10, step=0.1),
+        sliderInput("scale4", "scale: scale parameter", value=1, min=0, max=10, step=0.1)
     ),
     conditionalPanel(
       condition = "input.dist == 'dsignrank'",
-        sliderInput("n_", "n", value=0, min=0, max=10)
-    ),
+        sliderInput("n_1", "n: number of observations in the sample", value=10, min=0, max=100, step=1)
+   ),
     conditionalPanel(
       condition = "input.dist == 'dwilcox'",
-        sliderInput("m", "m", value=0, min=0, max=10),
-        sliderInput("n_", "n", value=0, min=0, max=10)
+        sliderInput("m_2", "m: numbers of observations in the first sample", value=10, min=0, max=100),
+        sliderInput("n_2", "n: numbers of observations in the second sample", value=10, min=0, max=100)
     )
  ),
 
