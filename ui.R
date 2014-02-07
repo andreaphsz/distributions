@@ -123,8 +123,7 @@ shinyUI(pageWithSidebar(
     ),
     conditionalPanel(
       condition = "input.dist == 'dunif'",
-        uiOutput("slider_u1"),
-        uiOutput("slider_u2")
+        sliderInput("minmax", "min, max: lower and upper limits of the distribution", value=c(0,1), min=-5, max=5, step=0.1)
     ),
     conditionalPanel(
       condition = "input.dist == 'dweibull'",
