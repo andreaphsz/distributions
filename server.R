@@ -46,6 +46,7 @@ shinyServer(function(input, output) {
     d <- as.data.frame(data())
     colnames(d) <- "x"
     m <- ggplot(d, aes(x))
+    if(input$fixxbool==TRUE) m <- m + scale_x_continuous(limits=input$fixx)
     print(m + geom_histogram(aes(y=..density..)) + geom_density(color="blue"))
   })
   

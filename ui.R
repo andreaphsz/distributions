@@ -34,6 +34,12 @@ shinyUI(pageWithSidebar(
                ),
     br(),
    
+    checkboxInput("fixxbool", "Fix x-axis?", value = FALSE),
+    conditionalPanel(
+      condition = "input.fixxbool == true",
+      sliderInput("fixx", "", value=c(-1,1), min=-10, max=10, step=0.5)
+    ),
+
     sliderInput("seed", "Set seed", value=77, min=7, max=777, step=7),
 
     sliderInput("n", "n: number of observations", value = 50, min = 10, max = 1000, step=10),
