@@ -10,9 +10,21 @@ shinyServer(function(input, output) {
   data <- reactive({
     set.seed(input$seed)
     dist <- switch(input$dist,
-                   dbeta = list(r=rbeta(input$n, input$shape1, input$shape2, input$ncp),d=dbeta(seq(0,1,by=0.01), input$shape1, input$shape2, input$ncp), x=seq(0,1,by=0.01)),
-                   dbinom = rbinom(input$n, input$size, input$prob),
-                   dcauchy = rcauchy(input$n, input$location, input$scale),
+                   dbeta = list(
+                     r=rbeta(input$n, input$shape1, input$shape2, input$ncp),
+                     d=dbeta(seq(0,1,length.out=input$n), input$shape1, input$shape2, input$ncp),
+                     x=seq(0,1,length.out=input$n)
+                   ),
+                   dbinom = list(
+                     r=rbinom(input$n, input$size, input$prob),
+                     d=dbinom(seq(0,input$size,length.out=input$n), input$size, input$prob),
+                     x=round(seq(0,input$size,length.out=input$n))
+                   ),
+                   dcauchy = list(
+                     r=rcauchy(input$n, input$location, input$scale),
+                     d=dcauchy(seq(-20,20,length.out=input$n), input$location, input$scale),
+                     x=(seq(-20,20,length.out=input$n))
+                   ),
                    dchisq = rchisq(input$n, input$df, input$ncp1),
                    dexp = rexp(input$n, input$rate),
                    df = rf(input$n, input$df1, input$df2, input$ncp2),
@@ -40,17 +52,16 @@ shinyServer(function(input, output) {
   output$plot <- renderPlot({
     dist <- input$dist
     n <- input$n
-    
-    #hist(data(), main=paste(dist, '(', n, ')', sep=''))
-    #print(qplot(data(), geom="histogram", main=dist) + geom_density())
     data. <- data()
-    r <- data.frame(data.$r)
-    d <- data.$d
-    xx <- data.$x
-    colnames(r) <- "x"
-    m <- ggplot(r, aes(x))
+    r <- data.frame(x=data.$r, d=data.$d, x.=data.$x)
+    #dd <- data.$d
+    #xx <- data.$x
+    m <- ggplot(r, aes(x)) 
     if(input$fixxbool==TRUE) m <- m + scale_x_continuous(limits=input$fixx)
-    #print(m + geom_histogram(aes(y=..density..)) + geom_line(aes(xx,d)))
+    m <- m + geom_histogram(aes(y=..density..))
+    #m <- m + geom_line(aes(xx,dd))
+    m <- m + geom_point(aes(x.,d), color="blue")
+    print(m)
   })
   
   # Generate a summary of the data
