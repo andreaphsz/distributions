@@ -10,7 +10,7 @@ shinyServer(function(input, output) {
   data <- reactive({
     set.seed(input$seed)
     dist <- switch(input$dist,
-                   dbeta = rbeta(input$n, input$shape1, input$shape2, input$ncp),
+                   dbeta = list(r=rbeta(input$n, input$shape1, input$shape2, input$ncp),d=dbeta(seq(0,1,by=0.01), input$shape1, input$shape2, input$ncp), x=seq(0,1,by=0.01)),
                    dbinom = rbinom(input$n, input$size, input$prob),
                    dcauchy = rcauchy(input$n, input$location, input$scale),
                    dchisq = rchisq(input$n, input$df, input$ncp1),
@@ -43,11 +43,14 @@ shinyServer(function(input, output) {
     
     #hist(data(), main=paste(dist, '(', n, ')', sep=''))
     #print(qplot(data(), geom="histogram", main=dist) + geom_density())
-    d <- as.data.frame(data())
-    colnames(d) <- "x"
-    m <- ggplot(d, aes(x))
+    data. <- data()
+    r <- data.frame(data.$r)
+    d <- data.$d
+    xx <- data.$x
+    colnames(r) <- "x"
+    m <- ggplot(r, aes(x))
     if(input$fixxbool==TRUE) m <- m + scale_x_continuous(limits=input$fixx)
-    print(m + geom_histogram(aes(y=..density..)) + geom_density(color="blue"))
+    #print(m + geom_histogram(aes(y=..density..)) + geom_line(aes(xx,d)))
   })
   
   # Generate a summary of the data
