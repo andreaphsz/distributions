@@ -12,7 +12,7 @@ shinyUI(pageWithSidebar(
   sidebarPanel(
     selectInput("dist", "Choose a distribution:",
                     list("Beta" = "dbeta", 
-                         "Binomiale" = "dbinom", 
+                         "Binomial" = "dbinom", 
                          "Cauchy" = "dcauchy",
                          "Chisquare" = "dchisq",
                          "Exponential" = "dexp",
