@@ -37,7 +37,7 @@ shinyUI(pageWithSidebar(
     checkboxInput("fixxbool", "Fix x-axis?", value = FALSE),
     conditionalPanel(
       condition = "input.fixxbool == true",
-      sliderInput("fixx", "", value=c(-1,1), min=-10, max=10, step=0.5)
+      sliderInput("fixx", "", value=c(-2,2), min=-10, max=10, step=0.5)
     ),
 
     sliderInput("seed", "Set seed", value=77, min=7, max=777, step=7),
@@ -58,7 +58,7 @@ shinyUI(pageWithSidebar(
     conditionalPanel(
       condition = "input.dist == 'dcauchy'",
         sliderInput("location", "location: location parameter", value=0, min=0, max=10, step=0.1),
-        sliderInput("scale", "scale: scale parameter", value=1, min=0, max=10, step=0.1)
+        sliderInput("scale", "scale: scale parameter", value=1, min=0, max=2, step=0.1)
     ),
     conditionalPanel(
       condition = "input.dist == 'dchisq'",
@@ -120,7 +120,7 @@ shinyUI(pageWithSidebar(
     ),
     conditionalPanel(
       condition = "input.dist == 'dpois'",
-       sliderInput("lambda", "lambda: vector of (non-negative) means", value=0, min=0, max=10, step=0.1)
+       sliderInput("lambda", "lambda: vector of (non-negative) means", value=1, min=0, max=10, step=0.1)
     ),
     conditionalPanel(
       condition = "input.dist == 'dt'",

@@ -11,36 +11,108 @@ shinyServer(function(input, output) {
     set.seed(input$seed)
     dist <- switch(input$dist,
                    dbeta = list(
-                     r=rbeta(input$n, input$shape1, input$shape2, input$ncp),
-                     d=dbeta(seq(0,1,length.out=input$n), input$shape1, input$shape2, input$ncp),
-                     x=seq(0,1,length.out=input$n)
+                     r=r<-rbeta(input$n, input$shape1, input$shape2, input$ncp),
+                     x=x<-seq(0,1,length.out=input$n),
+                     d=dbeta(x, input$shape1, input$shape2, input$ncp)
                    ),
                    dbinom = list(
-                     r=rbinom(input$n, input$size, input$prob),
-                     d=dbinom(seq(0,input$size,length.out=input$n), input$size, input$prob),
-                     x=round(seq(0,input$size,length.out=input$n))
+                     r=r<-rbinom(input$n, input$size, input$prob),
+                     x=x<-round(seq(0,ceiling(max(r)),length.out=input$n)),
+                     #x=x<-round(seq(0,input$size,length.out=input$n)),
+                     d=dbinom(x, input$size, input$prob)
                    ),
                    dcauchy = list(
-                     r=rcauchy(input$n, input$location, input$scale),
-                     d=dcauchy(seq(-20,20,length.out=input$n), input$location, input$scale),
-                     x=(seq(-20,20,length.out=input$n))
+                     r=r<-rcauchy(input$n, input$location, input$scale),
+                     x=x<-seq(ceiling(min(r)),ceiling(max(r)),length.out=input$n),
+                     #x=x<-seq(-20*(input$location+1),20*(input$location+1),length.out=input$n),
+                     d=dcauchy(x, input$location, input$scale)
                    ),
-                   dchisq = rchisq(input$n, input$df, input$ncp1),
-                   dexp = rexp(input$n, input$rate),
-                   df = rf(input$n, input$df1, input$df2, input$ncp2),
-                   dgamma = rgamma(input$n, input$shape, scale=input$scale1),
-                   dgeom = rgeom(input$n, input$prob1),
-                   dhyper = rhyper(input$n, input$m, input$n_, input$k),
-                   dlnorm = rlnorm(input$n, input$meanlog, input$sdlog),
-                   dmultinom = rmultinom(input$n, input$size, input$prob),
-                   dnbinom = if(input$p_or_mu=="prob") rnbinom(input$n, input$size3, input$prob3) else rnbinom(input$n, input$size3, mu=input$mu),
-                   dnorm = rnorm(input$n, input$mean, input$sd),
-                   dpois = rpois(input$n, input$lambda),
-                   dt = rt(input$n, input$df3, input$ncp3),
-                   dunif = runif(input$n, input$minmax[1], input$minmax[2]),
-                   dweibull = rweibull(input$n, input$shape4, input$scale4),
-                   dsignrank = rsignrank(input$n, input$n_1),
-                   dwilcox = rwilcox(input$n, input$m_2, input$n_2)
+                   dchisq = list(
+                     r=r<-rchisq(input$n, input$df, input$ncp1),
+                     x=x<-seq(0,ceiling(max(r)),length.out=input$n),
+                     #x=x<-seq(0,30+2*input$ncp1,length.out=input$n),
+                     d=dchisq(x, input$df, input$ncp1)
+                   ),
+                   dexp = list(
+                     r=r<-rexp(input$n, input$rate),
+                     x=x<-seq(0,ceiling(max(r)),length.out=input$n),
+                     #x=x<-seq(0,8/input$rate, length.out=input$n),
+                     d=dexp(x, input$rate)
+                   ),
+                   df = list(
+                     r=r<-rf(input$n, input$df1, input$df2, input$ncp2),
+                     x=x<-seq(0,ceiling(max(r)),length.out=input$n),
+                     d=df(x, input$df1, input$df2, input$ncp2)
+                   ),
+                   dgamma = list(
+                     r=r<-rgamma(input$n, input$shape, scale=input$scale1),
+                     x=x<-seq(0,ceiling(max(r)),length.out=input$n),
+                     d=dgamma(x,input$shape, scale=input$scale1)
+                   ),
+                   dgeom = list(
+                     r=r<-rgeom(input$n, input$prob1),
+                     x=x<-round(seq(0,ceiling(max(r)),length.out=input$n)),
+                     d=dgeom(x,input$prob1)
+                   ),
+                   dhyper = list(
+                     r=r<-rhyper(input$n, input$m, input$n_, input$k),
+                     x=x<-round(seq(0,ceiling(max(r)),length.out=input$n)),
+                     d=dhyper(x, input$m, input$n_, input$k)
+                   ),
+                   dlnorm = list(
+                     r=r<-rlnorm(input$n, input$meanlog, input$sdlog),
+                     x=x<-seq(0,ceiling(max(r)),length.out=input$n),
+                     d=dlnorm(x, input$meanlog, input$sdlog)
+                   ),
+                   #dmultinom = rmultinom(input$n, input$size, input$prob),
+                   dnbinom = if(input$p_or_mu=="prob") {
+                     list(
+                       r=r<-rnbinom(input$n, input$size3, input$prob3),
+                       x=x<-round(seq(0,ceiling(max(r)),length.out=input$n)),
+                       d=dnbinom(x, input$size3, input$prob3)
+                     )
+                     }else {
+                       list(
+                         r=r<-rnbinom(input$n, input$size3, mu=input$mu),
+                         x=x<-round(seq(0,ceiling(max(r)),length.out=input$n)),
+                         d=dnbinom(x, input$size3, mu=input$mu)
+                       )
+                   },
+                   dnorm = list(
+                     r=r<-rnorm(input$n, input$mean, input$sd),
+                     x=x<-seq(ceiling(min(r)),ceiling(max(r)),length.out=input$n),
+                     d=dnorm(x, input$mean, input$sd)
+                   ),
+                   dpois = list(
+                     r=r<-rpois(input$n, input$lambda),
+                     x=x<-round(seq(0,ceiling(max(r)),length.out=input$n)),
+                     d=dpois(x, input$lambda)
+                   ),
+                   dt = list(
+                     r=r<-rt(input$n, input$df3, input$ncp3),
+                     x=x<-seq(ceiling(min(r)),ceiling(max(r)),length.out=input$n),
+                     d=dt(x, input$df3, input$ncp3)
+                   ),
+                   dunif = list(
+                     r=r<-runif(input$n, input$minmax[1], input$minmax[2]),
+                     x=x<-seq(input$minmax[1],input$minmax[2],length.out=input$n),
+                     d=dunif(x, input$minmax[1], input$minmax[2])
+                   ),
+                   dweibull = list(
+                     r=r<-rweibull(input$n, input$shape4, input$scale4),
+                     x=x<-seq(round(min(r)),ceiling(max(r)),length.out=input$n),
+                     d=dweibull(x, input$shape4, input$scale4)
+                   ),
+                   dsignrank = list(
+                     r=r<-rsignrank(input$n, input$n_1),
+                     x=x<-round(seq(round(min(r)),ceiling(max(r)),length.out=input$n)),
+                     d=dsignrank(x, input$n_1)
+                   ),
+                   dwilcox = list(
+                     r=r<-rwilcox(input$n, input$m_2, input$n_2),
+                     x=x<-round(seq(round(min(r)),ceiling(max(r)),length.out=input$n)),
+                     d=dwilcox(x, input$m_2, input$n_2)
+                   )
                    )
     
   })
@@ -59,8 +131,8 @@ shinyServer(function(input, output) {
     m <- ggplot(r, aes(x)) 
     if(input$fixxbool==TRUE) m <- m + scale_x_continuous(limits=input$fixx)
     m <- m + geom_histogram(aes(y=..density..))
-    #m <- m + geom_line(aes(xx,dd))
-    m <- m + geom_point(aes(x.,d), color="blue")
+    m <- m + geom_line(aes(x.,d), color="blue")
+    #m <- m + geom_point(aes(x.,d), color="blue")
     print(m)
   })
   
