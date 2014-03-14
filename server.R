@@ -138,12 +138,13 @@ shinyServer(function(input, output) {
   
   # Generate a summary of the data
   output$summary <- renderPrint({
-    list("summary"=summary(data()),
-      "var"=var(data()),
-      "sd"=sd(data()),
-      "se"=sd(data())/sqrt(input$n),
-      "percent inside one sd" = 100*sum(mean(data()) - sd(data()) < data() & data() <  mean(data()) + sd(data()))/input$n,
-     "percent inside two sd" = 100*sum(mean(data()) - 2*sd(data()) < data() & data() <  mean(data()) + 2*sd(data()))/input$n
+    data. <- data()$r
+    list("summary"=summary(data.),
+      "var"=var(data.),
+      "sd"=sd(data.),
+      "se"=sd(data.)/sqrt(input$n),
+      "percent inside one sd" = 100*sum(mean(data.) - sd(data.) < data. & data. <  mean(data.) + sd(data.))/input$n,
+     "percent inside two sd" = 100*sum(mean(data.) - 2*sd(data.) < data. & data. <  mean(data.) + 2*sd(data.))/input$n
     )
   })
   
